@@ -1,0 +1,55 @@
+package com.revature.biz.impl;
+
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.revature.biz.StudentAccountService;
+import com.revature.biz.exception.BusinessServiceException;
+
+import com.revature.data.StudentAccountDAO;
+import com.revature.data.exception.DataServiceException;
+import com.revature.model.StudentAccount;
+import com.revature.model.DTO.StudentAccountDTO;
+
+
+
+@Service
+
+public class StudentAccountServiceImpl implements StudentAccountService {
+	private static Logger logger = Logger.getLogger(CategoryServiceImpl.class);
+
+	@Autowired
+	private StudentAccountDAO studentaccountDAO;
+
+	@Override
+	public StudentAccountDTO Login(String emailId, String password) throws BusinessServiceException {
+		StudentAccountDTO studentAccount = null;
+		try {
+			studentAccount=studentaccountDAO.getId(emailId, password);
+			logger.info("Login retrieved successfully");
+		} catch (DataServiceException e) {
+			logger.error(e.getMessage(), e);
+			throw new BusinessServiceException(e.getMessage(), e);
+		}
+		return studentAccount;
+
+	}
+	@Override
+	public List<StudentAccount> getActivityPointsByStudentId(Integer studentId) throws BusinessServiceException {
+		List<StudentAccount> studentAccount = null;
+		try {
+			studentAccount = studentaccountDAO.getActivityPointsByStudentId(studentId);
+			logger.info("student activity points data retrieved successfully");
+		} catch (DataServiceException e) {
+			logger.error(e.getMessage(), e);
+			throw new BusinessServiceException(e.getMessage(), e);
+		}
+		return studentAccount;
+
+	}
+
+}
+
