@@ -33,22 +33,8 @@ public class StudentCourseDAOImpl implements StudentCourseDAO {
 		this.dataRetriver = dataRetriver;
 	}
 
-	@Override
-	public List<StudentCourse> getAllStudentCourses() throws DataServiceException {
-		List<StudentCourse> studentCourses = null;
-		try {
-			StringBuilder sb = new StringBuilder("select * FROM student_courses sc");
-			studentCourses = dataRetriver.retrieveBySQLJSON(sb.toString());
-			logger.info("Student courses data retrieval success..");
-		} catch (DataAccessException e) {
-			logger.error(e.getMessage(), e);
-			throw new DataServiceException(DataUtils.getPropertyMessage("data_retrieval_fail"), e);
-		}
-		return studentCourses;
-	}
-
-	@Override
-	public List<StudentCourseSkillPointsDTO> getStudentCourseSkillPointsByStudentId(Integer studentId)
+		@Override
+	public List<StudentCourseSkillPointsDTO> getStudentCourseSkillPoints(Integer studentId)
 			throws DataServiceException {
 		List<StudentCourseSkillPointsDTO> studentCourseSkillPoints = null;
 		try {
@@ -63,22 +49,6 @@ public class StudentCourseDAOImpl implements StudentCourseDAO {
 			throw new DataServiceException(DataUtils.getPropertyMessage("data_retrieval_fail"), e);
 		}
 		return studentCourseSkillPoints;
-	}
-
-	@Override
-	public List<StudentCourse> getStudentCourseActivityPointsById(Integer studentId) throws DataServiceException {
-		List<StudentCourse> studentCourses = null;
-		try {
-			StringBuilder sb = new StringBuilder(
-					"SELECT enrollment_points,completion_points FROM vw_student_course_activity_points WHERE ID="
-							+ studentId);
-			studentCourses = dataRetriver.retrieveBySQL(sb.toString());
-			logger.info("Student courses data retrieval success..");
-		} catch (DataAccessException e) {
-			logger.error(e.getMessage(), e);
-			throw new DataServiceException(DataUtils.getPropertyMessage("data_retrieval_fail"), e);
-		}
-		return studentCourses;
 	}
 
 	@Override

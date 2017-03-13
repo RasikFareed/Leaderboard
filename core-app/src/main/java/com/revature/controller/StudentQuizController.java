@@ -12,40 +12,22 @@ import com.revature.biz.StudentQuizService;
 import com.revature.biz.exception.BusinessServiceException;
 import com.revature.controller.exception.InternalException;
 import com.revature.controller.exception.InvalidInputException;
-import com.revature.model.StudentQuiz;
 import com.revature.model.DTO.StudentQuizSkillPointsDTO;
 
 @RestController
-@RequestMapping("/quiz")
+@RequestMapping("/student")
 public class StudentQuizController {
 	private static Logger logger = Logger.getLogger(CategoryController.class);
 
 	@Autowired
 	private StudentQuizService studentQuizService;
 
-	@RequestMapping("/skillpoints")
-	public List<StudentQuiz> getStudentQuizzes() {
-		List<StudentQuiz> studentQuizzes = null;
-		try {
-			logger.info("Getting the student quizzes data...");
-			studentQuizzes = studentQuizService.getAllStudentQuizSkillPoints();
-			logger.info("student quizzes data retrieval success.");
-		} catch (BusinessServiceException e) {
-			logger.error(e.getMessage(), e);
-			throw new InvalidInputException(e.getMessage(), e);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new InternalException("System has some issue...", e);
-		}
-		return studentQuizzes;
-	}
-
-	@RequestMapping("/skill/points/{studentId}")
+	@RequestMapping("/{studentId}/quiz/skillpoints")
 	public List<StudentQuizSkillPointsDTO> getQuizByStudentId(@PathVariable("studentId") Integer studentId) {
 		List<StudentQuizSkillPointsDTO> studentQuizSkillPoints = null;
 		try {
 			logger.info("Getting the student quizzes data...");
-			studentQuizSkillPoints = studentQuizService.getStudentQuizSkillPointsByStudentId(studentId);
+			studentQuizSkillPoints = studentQuizService.getStudentQuizSkillPoints(studentId);
 
 			logger.info("student quizzes data retrieval success.");
 		} catch (BusinessServiceException e) {

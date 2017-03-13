@@ -1,55 +1,55 @@
 package com.revature.model.DTO;
 
 public class StudentActivityPointsDTO {
-	private Integer courseEnrollmentPoints;
-	private Integer courseCompletionPoints;
-	private Integer projectEnrollmentPoints;
-	private Integer projectCompletionPoints;
-	private Integer loginPoints;
+	private Integer CourseEnrollmentPoints;
+	private Integer CourseCompletionPoints;
+	private Integer ProjectEnrollmentPoints;
+	private Integer ProjectCompletionPoints;
+	private Integer LoginPoints;
 
 	public Integer getCourseEnrollmentPoints() {
-		return courseEnrollmentPoints;
+		return CourseEnrollmentPoints;
 	}
 
-	public void setCourseEnrollmentPoints(Integer courseEnrollmentPoints) {
-		this.courseEnrollmentPoints = courseEnrollmentPoints;
+	public void setCourseEnrollmentPoints(Integer CourseEnrollmentPoints) {
+		this.CourseEnrollmentPoints = CourseEnrollmentPoints;
 	}
 
 	public Integer getCourseCompletionPoints() {
-		return courseCompletionPoints;
+		return CourseCompletionPoints;
 	}
 
-	public void setCourseCompletionPoints(Integer courseCompletionPoints) {
-		this.courseCompletionPoints = courseCompletionPoints;
+	public void setCourseCompletionPoints(Integer CourseCompletionPoints) {
+		this.CourseCompletionPoints = CourseCompletionPoints;
 	}
 
 	public Integer getProjectEnrollmentPoints() {
-		return projectEnrollmentPoints;
+		return ProjectEnrollmentPoints;
 	}
 
-	public void setProjectEnrollmentPoints(Integer projectEnrollmentPoints) {
-		this.projectEnrollmentPoints = projectEnrollmentPoints;
+	public void setProjectEnrollmentPoints(Integer ProjectEnrollmentPoints) {
+		this.ProjectEnrollmentPoints = ProjectEnrollmentPoints;
 	}
 
 	public Integer getProjectCompletionPoints() {
-		return projectCompletionPoints;
+		return ProjectCompletionPoints;
 	}
 
-	public void setProjectCompletionPoints(Integer projectCompletionPoints) {
-		this.projectCompletionPoints = projectCompletionPoints;
+	public void setProjectCompletionPoints(Integer ProjectCompletionPoints) {
+		this.ProjectCompletionPoints = ProjectCompletionPoints;
 	}
 
 	public Integer getLoginPoints() {
-		return loginPoints;
+		return LoginPoints;
 	}
 
-	public void setLoginPoints(Integer loginPoints) {
-		this.loginPoints = loginPoints;
+	public void setLoginPoints(Integer LoginPoints) {
+		this.LoginPoints = LoginPoints;
 	}
 
 	public void setCourseErlPts(Object o) {
 		if (o != null) {
-			this.courseEnrollmentPoints = Integer.parseInt(o.toString());
+			this.CourseEnrollmentPoints = Integer.parseInt(o.toString());
 
 		}
 	}
@@ -60,7 +60,7 @@ public class StudentActivityPointsDTO {
 
 	public void setCourseCompPts(Object o) {
 		if (o != null) {
-			this.courseCompletionPoints = Integer.parseInt(o.toString());
+			this.CourseCompletionPoints = Integer.parseInt(o.toString());
 
 		}
 	}
@@ -71,7 +71,7 @@ public class StudentActivityPointsDTO {
 
 	public void setProjErlPts(Object o) {
 		if (o != null) {
-			this.projectEnrollmentPoints = Integer.parseInt(o.toString());
+			this.ProjectEnrollmentPoints = Integer.parseInt(o.toString());
 
 		}
 	}
@@ -82,7 +82,7 @@ public class StudentActivityPointsDTO {
 
 	public void setProjCompPts(Object o) {
 		if (o != null) {
-			this.projectCompletionPoints = Integer.parseInt(o.toString());
+			this.ProjectCompletionPoints = Integer.parseInt(o.toString());
 
 		}
 	}
@@ -93,7 +93,7 @@ public class StudentActivityPointsDTO {
 
 	public void setLoginPts(Object o) {
 		if (o != null) {
-			this.loginPoints = Integer.parseInt(o.toString());
+			this.LoginPoints = Integer.parseInt(o.toString());
 
 		}
 	}

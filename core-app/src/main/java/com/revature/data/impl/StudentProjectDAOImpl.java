@@ -30,68 +30,11 @@ public class StudentProjectDAOImpl implements StudentProjectDAO {
 	}
 
 	@Override
-	public List<StudentProject> getAllStudentProjects() throws DataServiceException {
-		List<StudentProject> studentProjects = null;
-		try {
-			StringBuilder sb = new StringBuilder("select * from student_projects");
-			studentProjects = dataRetriver.retrieveBySQL(sb.toString());
-			logger.info("Student Projects data retrieval success..");
-		} catch (DataAccessException e) {
-			logger.error(e.getMessage(), e);
-			throw new DataServiceException(DataUtils.getPropertyMessage("data_retrieval_fail"), e);
-		}
-		return studentProjects;
-	}
-
-	@Override
-	public List<StudentProject> getAllStudentProjectSkillPoints() throws DataServiceException {
-		List<StudentProject> studentProjects = null;
-		try {
-			StringBuilder sb = new StringBuilder("select * from vw_student_project_skill_points");
-			studentProjects = dataRetriver.retrieveBySQL(sb.toString());
-			logger.info("Student Projects Skill Points data retrieval success..");
-		} catch (DataAccessException e) {
-			logger.error(e.getMessage(), e);
-			throw new DataServiceException(DataUtils.getPropertyMessage("data_retrieval_fail"), e);
-		}
-		return studentProjects;
-	}
-
-	@Override
-	public List<StudentProject> getAllStudentProjectActivityPoints() throws DataServiceException {
-		List<StudentProject> studentProjects = null;
-		try {
-			StringBuilder sb = new StringBuilder("select * from vw_student_project_activity_points");
-			studentProjects = dataRetriver.retrieveBySQL(sb.toString());
-			logger.info("Student Projects Activity Points data retrieval success..");
-		} catch (DataAccessException e) {
-			logger.error(e.getMessage(), e);
-			throw new DataServiceException(DataUtils.getPropertyMessage("data_retrieval_fail"), e);
-		}
-		return studentProjects;
-	}
-	@Override
-	public List<StudentProject> getStudentProjectActivityPointsById(Integer studentId) throws DataServiceException {
-		List<StudentProject> studentProjects = null;
-		try {
-			StringBuilder sb = new StringBuilder(
-					"select enrollment_points,completion_points from vw_student_project_activity_points where id="
-							+ studentId);
-			studentProjects = dataRetriver.retrieveBySQLJSON(sb.toString());
-			logger.info("Student Projects Activity Points data retrieval success..");
-		} catch (DataAccessException e) {
-			logger.error(e.getMessage(), e);
-			throw new DataServiceException(DataUtils.getPropertyMessage("data_retrieval_fail"), e);
-		}
-		return studentProjects;
-	}
-
-	@Override
-	public List<StudentProjectSkillPointsDTO> getStudentProjectSkillPointsByStudentId(Integer studentId) throws DataServiceException {
+	public List<StudentProjectSkillPointsDTO> getStudentProjectSkillPoints(Integer studentId) throws DataServiceException {
 		List<StudentProjectSkillPointsDTO> studentProjectSkillPoints = null;
 		try {
 			StringBuilder sb = new StringBuilder(
-					"select NAME projectName,SKILL_POINTS skillPts from vw_student_project_skill_points where STUDENT_ID=" + studentId);
+					"select STUDENT_ID stuId,NAME projectName,SKILL_POINTS skillPts from vw_student_project_skill_points where STUDENT_ID=" + studentId);
 			studentProjectSkillPoints = dataRetriver.retrieveBySQLWithResultTransformer(sb.toString(), StudentProjectSkillPointsDTO.class);
 			logger.info("Student Projects Activity Points data retrieval success..");
 		} catch (DataAccessException e) {

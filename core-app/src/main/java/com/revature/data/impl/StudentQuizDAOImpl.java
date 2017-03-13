@@ -11,7 +11,6 @@ import com.revature.data.access.DataRetriver;
 import com.revature.data.access.exception.DataAccessException;
 import com.revature.data.exception.DataServiceException;
 import com.revature.data.utils.DataUtils;
-import com.revature.model.StudentQuiz;
 import com.revature.model.DTO.StudentQuizSkillPointsDTO;
 
 @Repository
@@ -29,41 +28,14 @@ public class StudentQuizDAOImpl implements StudentQuizDAO {
 		this.dataRetriver = dataRetriver;
 	}
 
+	
 	@Override
-	public List<StudentQuiz> getAllStudentQuiz() throws DataServiceException {
-		List<StudentQuiz> studentQuizzes = null;
-		try {
-			StringBuilder sb = new StringBuilder("select * from student_quizes");
-			studentQuizzes = dataRetriver.retrieveBySQL(sb.toString());
-			logger.info("Student quizzes data retrieval success..");
-		} catch (DataAccessException e) {
-			logger.error(e.getMessage(), e);
-			throw new DataServiceException(DataUtils.getPropertyMessage("data_retrieval_fail"), e);
-		}
-		return studentQuizzes;
-	}
-
-	@Override
-	public List<StudentQuiz> getAllStudentQuizSkillPoints() throws DataServiceException {
-		List<StudentQuiz> studentQuizzes = null;
-		try {
-			StringBuilder sb = new StringBuilder("select * from vw_student_quiz_skill_points");
-			studentQuizzes = dataRetriver.retrieveBySQL(sb.toString());
-			logger.info("Student Quizzes data retrieval success..");
-		} catch (DataAccessException e) {
-			logger.error(e.getMessage(), e);
-			throw new DataServiceException(DataUtils.getPropertyMessage("data_retrieval_fail"), e);
-		}
-		return studentQuizzes;
-	}
-
-	@Override
-	public List<StudentQuizSkillPointsDTO> getStudentQuizSkillPointsByStudentId(Integer studentId)
+	public List<StudentQuizSkillPointsDTO> getStudentQuizSkillPoints(Integer studentId)
 			throws DataServiceException {
 		List<StudentQuizSkillPointsDTO> studentQuizSkillPoints = null;
 		try {
 			StringBuilder sb = new StringBuilder(
-					"select NAME quizName,SKILL_POINTS skillPts from vw_student_quiz_skill_points where STUDENT_ID="
+					"SELECT quizzes.`NAME` quizName,quizzes.`SKILL_POINTS` skillPts FROM student_quizes JOIN quizzes ON quizzes.`ID`=student_quizes.`QUIZ_ID` RIGHT JOIN students ON students.`ID`=student_quizes.`STUDENT_ID` WHERE student_quizes.`STATUS_ID`=2 and student_id="
 							+ studentId);
 			studentQuizSkillPoints = dataRetriver.retrieveBySQLWithResultTransformer(sb.toString(),
 					StudentQuizSkillPointsDTO.class);

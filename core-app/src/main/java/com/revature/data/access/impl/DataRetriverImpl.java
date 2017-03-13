@@ -68,9 +68,7 @@ public class DataRetriverImpl implements DataRetriver {
 		try {
 			Query query = sessionFactory.getCurrentSession().createSQLQuery(queryString)
 					.setResultTransformer(Transformers.aliasToBean(cls));
-			Object o = query.uniqueResult();
-			object = (E) sessionFactory.getCurrentSession().createSQLQuery(queryString)
-					.setResultTransformer(Transformers.aliasToBean(cls)).uniqueResult();
+			object = (E) query.uniqueResult();
 			logger.info("data retrieval success..");
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -78,7 +76,5 @@ public class DataRetriverImpl implements DataRetriver {
 		}
 		return object;
 	}
-
-	
 
 }

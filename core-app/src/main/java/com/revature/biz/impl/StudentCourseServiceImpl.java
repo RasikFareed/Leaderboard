@@ -22,25 +22,14 @@ public class StudentCourseServiceImpl implements StudentCourseService {
 	@Autowired
 	private StudentCourseDAO studentcourseDAO;
 
-	@Override
-	public List<StudentCourse> getAllStudentCourses() throws BusinessServiceException {
-		List<StudentCourse> studentCourses = null;
-		try {
-			studentCourses = studentcourseDAO.getAllStudentCourses();
-			logger.info("student courses retrieved successfully");
-		} catch (DataServiceException e) {
-			logger.error(e.getMessage(), e);
-			throw new BusinessServiceException(e.getMessage(), e);
-		}
-		return studentCourses;
-	}
+
 
 	@Override
-	public List<StudentCourseSkillPointsDTO> getStudentCourseSkillPointsByStudentId(Integer studentId)
+	public List<StudentCourseSkillPointsDTO> getStudentCourseSkillPoints(Integer studentId)
 			throws BusinessServiceException {
 		List<StudentCourseSkillPointsDTO> studentCourses = null;
 		try {
-			studentCourses = studentcourseDAO.getStudentCourseSkillPointsByStudentId(studentId);
+			studentCourses = studentcourseDAO.getStudentCourseSkillPoints(studentId);
 			logger.info("student courses retrieved successfully");
 		} catch (DataServiceException e) {
 			logger.error(e.getMessage(), e);
@@ -50,19 +39,7 @@ public class StudentCourseServiceImpl implements StudentCourseService {
 
 	}
 
-	@Override
-	public List<StudentCourse> getStudentCourseActivityPointsById(Integer studentId) throws BusinessServiceException {
-		List<StudentCourse> studentCourses = null;
-		try {
-			studentCourses = studentcourseDAO.getStudentCourseActivityPointsById(studentId);
-			logger.info("student courses retrieved successfully");
-		} catch (DataServiceException e) {
-			logger.error(e.getMessage(), e);
-			throw new BusinessServiceException(e.getMessage(), e);
-		}
-		return studentCourses;
-
-	}
+	
 
 	@Override
 	public List<StudentCourseHoursSpentDTO> getStudentCourseHoursSpent(Integer studentId)

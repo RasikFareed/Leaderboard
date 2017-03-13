@@ -11,6 +11,7 @@ import com.revature.biz.exception.BusinessServiceException;
 import com.revature.data.StudentDAO;
 import com.revature.data.exception.DataServiceException;
 import com.revature.model.DTO.StudentActivityPointsDTO;
+import com.revature.model.DTO.StudentLoginHoursDTO;
 import com.revature.model.DTO.StudentRankDTO;
 
 @Service
@@ -45,5 +46,18 @@ public class StudentServiceImpl implements StudentService {
 			throw new BusinessServiceException(e.getMessage(), e);
 		}
 		return studentActivityPoints;
+	}
+
+	@Override
+	public List<StudentLoginHoursDTO> getStudentLoginDetails(Integer studentId) throws BusinessServiceException {
+		List<StudentLoginHoursDTO> studentLoginHours = null;
+		try {
+			studentLoginHours = studentDAO.getStudentLoginHours(studentId);
+			logger.info("student ranks retrieved successfully");
+		} catch (DataServiceException e) {
+			logger.error(e.getMessage(), e);
+			throw new BusinessServiceException(e.getMessage(), e);
+		}
+		return studentLoginHours;
 	}
 }

@@ -21,49 +21,13 @@ public class StudentProjectServiceImpl implements StudentProjectService {
 	@Autowired
 	private StudentProjectDAO studentProjectDAO;
 
+	
+	
 	@Override
-	public List<StudentProject> getAllStudentProjects() throws BusinessServiceException {
-		List<StudentProject> studentProjects = null;
-		try {
-			studentProjects = studentProjectDAO.getAllStudentProjects();
-			logger.info("Student Projects retrieved successfully");
-		} catch (DataServiceException e) {
-			logger.error(e.getMessage(), e);
-			throw new BusinessServiceException(e.getMessage(), e);
-		}
-		return studentProjects;
-	}
-
-	@Override
-	public List<StudentProject> getAllStudentProjectSkillPoints() throws BusinessServiceException {
-		List<StudentProject> studentProjects = null;
-		try {
-			studentProjects = studentProjectDAO.getAllStudentProjectSkillPoints();
-			logger.info("Student Project Skill Points retrieved successfully");
-		} catch (DataServiceException e) {
-			logger.error(e.getMessage(), e);
-			throw new BusinessServiceException(e.getMessage(), e);
-		}
-		return studentProjects;
-	}
-
-	@Override
-	public List<StudentProject> getAllStudentProjectActivityPoints() throws BusinessServiceException {
-		List<StudentProject> studentProjects = null;
-		try {
-			studentProjects = studentProjectDAO.getAllStudentProjectActivityPoints();
-			logger.info("Student Project Activity Points retrieved successfully");
-		} catch (DataServiceException e) {
-			logger.error(e.getMessage(), e);
-			throw new BusinessServiceException(e.getMessage(), e);
-		}
-		return studentProjects;
-	}
-	@Override
-	public List<StudentProjectSkillPointsDTO> getStudentProjectSkillPointsByStudentId(Integer studentId) throws BusinessServiceException {
+	public List<StudentProjectSkillPointsDTO> getStudentProjectSkillPoints(Integer studentId) throws BusinessServiceException {
 		List<StudentProjectSkillPointsDTO> studentProjects = null;
 		try {
-			studentProjects = studentProjectDAO.getStudentProjectSkillPointsByStudentId(studentId);
+			studentProjects = studentProjectDAO.getStudentProjectSkillPoints(studentId);
 			logger.info("Student Project Skill Points retrieved successfully");
 		} catch (DataServiceException e) {
 			logger.error(e.getMessage(), e);
@@ -72,18 +36,7 @@ public class StudentProjectServiceImpl implements StudentProjectService {
 		return studentProjects;
 	}
 
-	@Override
-	public List<StudentProject> getProjectActivityPointsByStudentId(Integer studentId) throws BusinessServiceException {
-		List<StudentProject> studentProjects = null;
-		try {
-			studentProjects = studentProjectDAO.getStudentProjectActivityPointsById(studentId);
-			logger.info("Student Project Activity Points retrieved successfully");
-		} catch (DataServiceException e) {
-			logger.error(e.getMessage(), e);
-			throw new BusinessServiceException(e.getMessage(), e);
-		}
-		return studentProjects;
-	}
+	
 
 	@Override
 	public List<StudentProjectPercentageDTO> getStudentProjectPercentageCompleted(Integer studentId)

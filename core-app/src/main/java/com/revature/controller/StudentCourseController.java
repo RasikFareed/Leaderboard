@@ -18,7 +18,7 @@ import com.revature.model.DTO.StudentCoursePercentageDTO;
 import com.revature.model.DTO.StudentCourseSkillPointsDTO;
 
 @RestController
-@RequestMapping("/courses")
+@RequestMapping("/student")
 
 public class StudentCourseController {
 	private static Logger logger = Logger.getLogger(StudentCourseController.class);
@@ -26,29 +26,13 @@ public class StudentCourseController {
 	@Autowired
 	private StudentCourseService studentCourseService;
 
-	@RequestMapping("/all/student")
-	public List<StudentCourse> getActiveStudentCourse() {
-		List<StudentCourse> studentcourses = null;
-		try {
-			logger.info("Getting the student courses data...");
-			studentcourses = studentCourseService.getAllStudentCourses();
-			logger.info("student courses data retrieval success.");
-		} catch (BusinessServiceException e) {
-			logger.error(e.getMessage(), e);
-			throw new InvalidInputException(e.getMessage(), e);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new InternalException("System has some issue...", e);
-		}
-		return studentcourses;
-	}
-
-	@RequestMapping("/skill/points/{studentId}")
+	
+	@RequestMapping("{studentId}/course/skillpoints")
 	public List<StudentCourseSkillPointsDTO> getActiveStudentCourseSkillPointsbyId(@PathVariable("studentId") Integer studentId) {
 		List<StudentCourseSkillPointsDTO> studentCourseSkillPoints = null;
 		try {
 			logger.info("Getting the student courses data...");
-			studentCourseSkillPoints = studentCourseService.getStudentCourseSkillPointsByStudentId(studentId);
+			studentCourseSkillPoints = studentCourseService.getStudentCourseSkillPoints(studentId);
 			logger.info("student courses data retrieval success.");
 		} catch (BusinessServiceException e) {
 			logger.error(e.getMessage(), e);
@@ -60,24 +44,8 @@ public class StudentCourseController {
 		return studentCourseSkillPoints;
 	}
 
-	@RequestMapping("/activity/points/{studentId}")
-	public List<StudentCourse> getActiveStudentCourseAtivityPointsbyId(@PathVariable("studentId") Integer studentId) {
-		List<StudentCourse> studentcourses = null;
-		try {
-			logger.info("Getting the student courses data...");
-			studentcourses = studentCourseService.getStudentCourseActivityPointsById(studentId);
-			logger.info("student courses data retrieval success.");
-		} catch (BusinessServiceException e) {
-			logger.error(e.getMessage(), e);
-			throw new InvalidInputException(e.getMessage(), e);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new InternalException("System has some issue...", e);
-		}
-		return studentcourses;
-	}
-
-	@RequestMapping(value = "/hoursspent/{studentId}")
+	
+	@RequestMapping(value = "{studentId}/course/hoursspent")
 	public List<StudentCourseHoursSpentDTO> getStudentCourseHoursSpent(@PathVariable("studentId") Integer studentId) {
 		List<StudentCourseHoursSpentDTO> studentCourseHoursSpent = null;
 
@@ -96,8 +64,8 @@ public class StudentCourseController {
 		return studentCourseHoursSpent;
 	}
 
-	@RequestMapping("/percentage/{studentId}")
-	public List<StudentCoursePercentageDTO> getCoursePercentageById(@PathVariable("studentId") Integer studentId) {
+	@RequestMapping("{studentId}/course/percentage")
+	public List<StudentCoursePercentageDTO> getCoursePercentage(@PathVariable("studentId") Integer studentId) {
 		List<StudentCoursePercentageDTO> studentcourses = null;
 		try {
 			logger.info("Getting the student courses data...");
@@ -113,7 +81,7 @@ public class StudentCourseController {
 		return studentcourses;
 	}
 
-	@RequestMapping("/details/{courseName}")
+	@RequestMapping("course/{courseName}/coursedetails")
 	public List<StudentCourse> getStudentCourseDetailsByCourseName(@PathVariable("courseName") String courseName) {
 		List<StudentCourse> studentcourses = null;
 		try {
@@ -130,7 +98,7 @@ public class StudentCourseController {
 		return studentcourses;
 	}
 
-	@RequestMapping("/activity/details/{courseName}")
+	@RequestMapping("course/{courseName}/activitydetails")
 	public List<StudentCourse> getStudentCourseActivityDetailsByCourseName(
 			@PathVariable("courseName") String courseName) {
 		List<StudentCourse> studentcourses = null;

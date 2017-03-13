@@ -17,54 +17,20 @@ import com.revature.model.DTO.StudentProjectPercentageDTO;
 import com.revature.model.DTO.StudentProjectSkillPointsDTO;
 
 @RestController
-@RequestMapping("/projects")
+@RequestMapping("/student")
 public class StudentProjectController {
 	private static Logger logger = Logger.getLogger(CategoryController.class);
 
 	@Autowired
 	private StudentProjectService studentProjectService;
 
-	@RequestMapping("/all/student")
-	public List<StudentProject> getStudentProjects() {
-		List<StudentProject> studentProjects = null;
-		try {
-			logger.info("Getting the student projects data...");
-			studentProjects = studentProjectService.getAllStudentProjects();
-			logger.info("student projects data retrieval success.");
-		} catch (BusinessServiceException e) {
-			logger.error(e.getMessage(), e);
-			throw new InvalidInputException(e.getMessage(), e);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new InternalException("System has some issue...", e);
-		}
-		return studentProjects;
-	}
 
-	@RequestMapping("/activity/points/{studentId}")
-	public List<StudentProject> getProjectActivityPointsByStudentId(
-			@PathVariable("studentId") Integer studentId) {
-		List<StudentProject> studentProjects = null;
-		try {
-			logger.info("Getting the student projects data...");
-			studentProjects = studentProjectService.getProjectActivityPointsByStudentId(studentId);
-			logger.info("student projects data retrieval success.");
-		} catch (BusinessServiceException e) {
-			logger.error(e.getMessage(), e);
-			throw new InvalidInputException(e.getMessage(), e);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new InternalException("System has some issue...", e);
-		}
-		return studentProjects;
-	}
-
-	@RequestMapping("/skill/points/{studentId}")
-	public List<StudentProjectSkillPointsDTO> getProjectSkillPointsByStudentId(@PathVariable("studentId") Integer studentId) {
+	@RequestMapping("{studentId}/project/skillpoints")
+	public List<StudentProjectSkillPointsDTO> getProjectSkillPoints(@PathVariable("studentId") Integer studentId) {
 		List<StudentProjectSkillPointsDTO> studentProjectSkillPoints = null;
 		try {
 			logger.info("Getting the student projects data...");
-			studentProjectSkillPoints = studentProjectService.getStudentProjectSkillPointsByStudentId(studentId);
+			studentProjectSkillPoints = studentProjectService.getStudentProjectSkillPoints(studentId);
 			logger.info("student projects data retrieval success.");
 		} catch (BusinessServiceException e) {
 			logger.error(e.getMessage(), e);
@@ -76,7 +42,7 @@ public class StudentProjectController {
 		return studentProjectSkillPoints;
 	}
 
-	@RequestMapping("/percentage/{studentId}")
+	@RequestMapping("{studentId}/project/percentage")
 	public List<StudentProjectPercentageDTO> getStudenProjectPercentageCompleted(@PathVariable("studentId") Integer studentId) {
 		List<StudentProjectPercentageDTO> studentProjectPercentage = null;
 		try {
@@ -93,37 +59,7 @@ public class StudentProjectController {
 		return studentProjectPercentage;
 	}
 
-	@RequestMapping("/skill/points")
-	public List<StudentProject> getActiveStudentProjectSkillPointsController() {
-		List<StudentProject> studentProjects = null;
-		try {
-			logger.info("Getting the student projects data...");
-			studentProjects = studentProjectService.getAllStudentProjectSkillPoints();
-			logger.info("student projects data retrieval success.");
-		} catch (BusinessServiceException e) {
-			logger.error(e.getMessage(), e);
-			throw new InvalidInputException(e.getMessage(), e);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new InternalException("System has some issue...", e);
-		}
-		return studentProjects;
-	}
+	
 
-	@RequestMapping("/activity/points")
-	public List<StudentProject> getActiveStudentProjectActivityPointsController() {
-		List<StudentProject> studentProjects = null;
-		try {
-			logger.info("Getting the student projects data...");
-			studentProjects = studentProjectService.getAllStudentProjectActivityPoints();
-			logger.info("student projects data retrieval success.");
-		} catch (BusinessServiceException e) {
-			logger.error(e.getMessage(), e);
-			throw new InvalidInputException(e.getMessage(), e);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new InternalException("System has some issue...", e);
-		}
-		return studentProjects;
-	}
+	
 }

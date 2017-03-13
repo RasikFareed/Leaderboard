@@ -15,15 +15,9 @@ public interface StudentProjectService {
 	 * @throws BusinessServiceException
 	 *             if any business error occurs
 	 */
-	List<StudentProject> getAllStudentProjects() throws BusinessServiceException;
+	
 
-	List<StudentProject> getAllStudentProjectSkillPoints() throws BusinessServiceException;
-
-	List<StudentProject> getAllStudentProjectActivityPoints() throws BusinessServiceException;
-
-	List<StudentProjectSkillPointsDTO> getStudentProjectSkillPointsByStudentId(Integer studentId) throws BusinessServiceException;
-
-	List<StudentProject> getProjectActivityPointsByStudentId(Integer studentId) throws BusinessServiceException;
+	List<StudentProjectSkillPointsDTO> getStudentProjectSkillPoints(Integer studentId) throws BusinessServiceException;
 
 	List<StudentProjectPercentageDTO> getStudentProjectPercentageCompleted(Integer studentId) throws BusinessServiceException;
 

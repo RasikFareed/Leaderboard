@@ -19,11 +19,8 @@ public interface StudentCourseService {
 	 *             if any business error occurs
 	 */
 
-	List<StudentCourse> getAllStudentCourses() throws BusinessServiceException;
 
-	List<StudentCourseSkillPointsDTO> getStudentCourseSkillPointsByStudentId(Integer studentId) throws BusinessServiceException;
-
-	List<StudentCourse> getStudentCourseActivityPointsById(Integer studentId) throws BusinessServiceException;
+	List<StudentCourseSkillPointsDTO> getStudentCourseSkillPoints(Integer studentId) throws BusinessServiceException;
 
 	List<StudentCourseHoursSpentDTO> getStudentCourseHoursSpent(Integer studentId) throws BusinessServiceException;
 
