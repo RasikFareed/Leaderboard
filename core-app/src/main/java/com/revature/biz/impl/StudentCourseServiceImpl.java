@@ -11,6 +11,7 @@ import com.revature.biz.exception.BusinessServiceException;
 import com.revature.data.StudentCourseDAO;
 import com.revature.data.exception.DataServiceException;
 import com.revature.model.StudentCourse;
+import com.revature.model.DTO.StudentCourseDetailsDTO;
 import com.revature.model.DTO.StudentCourseHoursSpentDTO;
 import com.revature.model.DTO.StudentCoursePercentageDTO;
 import com.revature.model.DTO.StudentCourseSkillPointsDTO;
@@ -71,16 +72,16 @@ public class StudentCourseServiceImpl implements StudentCourseService {
 	}
 
 	@Override
-	public List<StudentCourse> getStudentCourseDetails(String courseName) throws BusinessServiceException {
-		List<StudentCourse> studentCourses = null;
+	public List<StudentCourseDetailsDTO> getStudentCourseDetails(String courseName) throws BusinessServiceException {
+		List<StudentCourseDetailsDTO> studentCoursesDetailsDTO = null;
 		try {
-			studentCourses = studentcourseDAO.getStudentCourseDetails(courseName);
+			studentCoursesDetailsDTO = studentcourseDAO.getStudentCourseDetails(courseName);
 			logger.info("student courses retrieved successfully");
 		} catch (DataServiceException e) {
 			logger.error(e.getMessage(), e);
 			throw new BusinessServiceException(e.getMessage(), e);
 		}
-		return studentCourses;
+		return studentCoursesDetailsDTO;
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import com.revature.biz.exception.BusinessServiceException;
 import com.revature.controller.exception.InternalException;
 import com.revature.controller.exception.InvalidInputException;
 import com.revature.model.StudentCourse;
+import com.revature.model.DTO.StudentCourseDetailsDTO;
 import com.revature.model.DTO.StudentCourseHoursSpentDTO;
 import com.revature.model.DTO.StudentCoursePercentageDTO;
 import com.revature.model.DTO.StudentCourseSkillPointsDTO;
@@ -82,11 +83,11 @@ public class StudentCourseController {
 	}
 
 	@RequestMapping("course/{courseName}/coursedetails")
-	public List<StudentCourse> getStudentCourseDetailsByCourseName(@PathVariable("courseName") String courseName) {
-		List<StudentCourse> studentcourses = null;
+	public List<StudentCourseDetailsDTO> getStudentCourseDetailsByCourseName(@PathVariable("courseName") String courseName) {
+		List<StudentCourseDetailsDTO> studentCourseDetailsDTO = null;
 		try {
 			logger.info("Getting the student courses data...");
-			studentcourses = studentCourseService.getStudentCourseDetails(courseName);
+			studentCourseDetailsDTO= studentCourseService.getStudentCourseDetails(courseName);
 			logger.info("student courses data retrieval success.");
 		} catch (BusinessServiceException e) {
 			logger.error(e.getMessage(), e);
@@ -95,7 +96,7 @@ public class StudentCourseController {
 			logger.error(e.getMessage(), e);
 			throw new InternalException("System has some issue...", e);
 		}
-		return studentcourses;
+		return studentCourseDetailsDTO;
 	}
 
 	@RequestMapping("course/{courseName}/activitydetails")

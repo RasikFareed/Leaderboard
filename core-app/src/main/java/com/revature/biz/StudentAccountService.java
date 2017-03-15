@@ -14,8 +14,14 @@ public interface StudentAccountService {
 	 * @throws BusinessServiceException
 	 *             if any business error occurs
 	 */
-	public StudentAccountDTO Login(String emailId, String password) throws BusinessServiceException;
+	//public StudentAccountDTO Login(String emailId, String password) throws BusinessServiceException;
 
 	public List<StudentAccount> getActivityPointsByStudentId(Integer studentId) throws BusinessServiceException;
+
+	public String insertUserPassword(String password, String emailId) throws BusinessServiceException;
+
+	public StudentAccountDTO getUserByLogin(String emailId, String password) throws BusinessServiceException;
+
+	public StudentAccountDTO Login(String emailId, String password) throws BusinessServiceException;
 
 }

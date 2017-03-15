@@ -51,4 +51,31 @@ public class StudentProjectServiceImpl implements StudentProjectService {
 		}
 		return studentProjectPercentage;
 	}
+	
+	@Override
+	public List<StudentProject> getStudentProjectDetails(String projectName)
+			throws BusinessServiceException {
+		List<StudentProject> studentProjectDetails = null;
+		try {
+			studentProjectDetails = studentProjectDAO.getStudentProjectDetails(projectName);
+			logger.info("Student Project Activity Points retrieved successfully");
+		} catch (DataServiceException e) {
+			logger.error(e.getMessage(), e);
+			throw new BusinessServiceException(e.getMessage(), e);
+		}
+		return studentProjectDetails;
+	}
+	@Override
+	public List<StudentProject> getStudentProjectActivityDetails(String projectName)
+			throws BusinessServiceException {
+		List<StudentProject> studentProjectActivityDetails = null;
+		try {
+			studentProjectActivityDetails = studentProjectDAO.getStudentProjectDetails(projectName);
+			logger.info("Student Project Activity Points retrieved successfully");
+		} catch (DataServiceException e) {
+			logger.error(e.getMessage(), e);
+			throw new BusinessServiceException(e.getMessage(), e);
+		}
+		return studentProjectActivityDetails;
+	}
 }

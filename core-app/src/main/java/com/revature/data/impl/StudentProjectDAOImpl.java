@@ -34,7 +34,7 @@ public class StudentProjectDAOImpl implements StudentProjectDAO {
 		List<StudentProjectSkillPointsDTO> studentProjectSkillPoints = null;
 		try {
 			StringBuilder sb = new StringBuilder(
-					"select STUDENT_ID stuId,NAME projectName,SKILL_POINTS skillPts from vw_student_project_skill_points where STUDENT_ID=" + studentId);
+					"SELECT`projects`.`NAME` projectName,`student_projects`.`STUDENT_ID` stuId,SUM(`project_sprint_activities`.`SKILL_POINTS`) skillPts FROM (`projects`LEFT JOIN (`student_projects`LEFT JOIN (`student_project_sprints`LEFT JOIN (`student_project_sprint_activities` JOIN `project_sprint_activities` ON ((`project_sprint_activities`.`ID` = `student_project_sprint_activities`.`PROJECT_SPRINT_ACTIVITY_ID`))) ON ((`student_project_sprints`.`ID` = `student_project_sprint_activities`.`STUDENT_PROJECTS_SPRINT_ID`)))ON ((`student_projects`.`ID` = `student_project_sprints`.`STUDENT_PROJECT_ID`))) ON ((`projects`.`ID` = `student_projects`.`PROJECT_ID`)))WHERE (`student_project_sprint_activities`.`STATUS_ID` = 2)GROUP BY `student_projects`.`STUDENT_ID`,`projects`.`NAME` having student_id=" + studentId);
 			studentProjectSkillPoints = dataRetriver.retrieveBySQLWithResultTransformer(sb.toString(), StudentProjectSkillPointsDTO.class);
 			logger.info("Student Projects Activity Points data retrieval success..");
 		} catch (DataAccessException e) {
@@ -47,7 +47,7 @@ public class StudentProjectDAOImpl implements StudentProjectDAO {
 	public List<StudentProjectPercentageDTO> getStudentProjectPercentageCompleted(Integer studentId) throws DataServiceException {
 		List<StudentProjectPercentageDTO> studentProjectPercentage = null;
 		try {
-			StringBuilder sb = new StringBuilder("SELECT NAME projectName,STUDENT_ID stuId,ROUND(PERCENTAGE) perComp FROM `vw_project_activity_percentage_calculation` WHERE STUDENT_ID=" + studentId);
+			StringBuilder sb = new StringBuilder("SELECT STUDENT_ID stuId, NAME projectName, ROUND((q.COMPLETED_ACTIVITIES/(SELECT COUNT(*) AS TOTAL_ACTIVITIES FROM  project_sprints s, project_sprint_activities a WHERE q.id = s.`PROJECT_ID` AND s.`ID` = a.`PROJECT_SPRINT_ID` ))*100) perComp FROM(SELECT sp.STUDENT_ID ,p.NAME , p.ID, COUNT(*) AS COMPLETED_ACTIVITIES FROM student_project_sprint_activities spsa, student_project_sprints sps, student_projects sp , projects p WHERE sps.`ID` = spsa.STUDENT_PROJECTS_SPRINT_ID AND sps.`STUDENT_PROJECT_ID` = sp.id AND sp.`PROJECT_ID` = p.`ID` AND spsa.status_id = 2 GROUP BY p.NAME, p.ID , sp.STUDENT_ID ) q having student_id=" + studentId);
 			studentProjectPercentage = dataRetriver.retrieveBySQLWithResultTransformer(sb.toString(), StudentProjectPercentageDTO.class);
 			logger.info("Student Projects percentage data retrieval success..");
 		} catch (DataAccessException e) {
@@ -55,5 +55,31 @@ public class StudentProjectDAOImpl implements StudentProjectDAO {
 			throw new DataServiceException(DataUtils.getPropertyMessage("data_retrieval_fail"), e);
 		}
 		return studentProjectPercentage;
+	}
+	@Override
+	public List<StudentProject> getStudentProjectDetails(String projectName) throws DataServiceException {
+		List<StudentProject> studentProjectDetails = null;
+		try {
+			StringBuilder sb = new StringBuilder("SELECT projects.`NAME`,projects.`DESCRIPTION`,projects.`ENROLLMENT_POINTS`,projects.`COMPLETION_POINTS`,COUNT(project_sprint_activities.`NAME`) FROM projects JOIN project_sprints  ON project_sprints.`PROJECT_ID`=projects.`ID` JOIN project_sprint_activities  ON project_sprint_activities.`PROJECT_SPRINT_ID`=project_sprints.`ID` GROUP BY projects.`NAME` having projects.name='" + projectName+"'");
+			studentProjectDetails = dataRetriver.retrieveBySQLWithResultTransformer(sb.toString(), StudentProject.class);
+			logger.info("Student Projects percentage data retrieval success..");
+		} catch (DataAccessException e) {
+			logger.error(e.getMessage(), e);
+			throw new DataServiceException(DataUtils.getPropertyMessage("data_retrieval_fail"), e);
+		}
+		return studentProjectDetails;
+	}
+	@Override
+	public List<StudentProject> getStudentProjectActivityDetails(String projectName) throws DataServiceException {
+		List<StudentProject> studentProjectActivityDetails = null;
+		try {
+			StringBuilder sb = new StringBuilder("SELECT projects.`NAME`,project_sprint_activities.`NAME` FROM projects JOIN project_sprints ON project_sprints.`PROJECT_ID`=projects.`ID` JOIN project_sprint_activities ON project_sprint_activities.`PROJECT_SPRINT_ID`=project_sprints.`ID having projects.name='" + projectName+"'");
+			studentProjectActivityDetails = dataRetriver.retrieveBySQLWithResultTransformer(sb.toString(), StudentProject.class);
+			logger.info("Student Projects percentage data retrieval success..");
+		} catch (DataAccessException e) {
+			logger.error(e.getMessage(), e);
+			throw new DataServiceException(DataUtils.getPropertyMessage("data_retrieval_fail"), e);
+		}
+		return studentProjectActivityDetails;
 	}
 }

@@ -65,8 +65,7 @@ public class StudentDAOImpl implements StudentDAO {
 		List<StudentLoginHoursDTO> studentLoginHoursDetails = null;
 		try {
 			StringBuilder sb = new StringBuilder(
-					"select DAY_NAME dayName,HOURS_DISTRIBUTION hoursDistribution from vw_student_login_hours where STUDENT_ID="
-							+ studentId);
+					"SELECT IF(IFNULL(b.logoutdate,FALSE),DAYNAME(b.logoutdate),0) AS DAY_NAME,DATE(b.logoutdate),b.student_id AS STUDENT_ID,HOUR(b.total_duration)+MINUTE(b.total_duration)/60+SECOND(b.total_duration)/3600 AS HOURS_DISTRIBUTION FROM(SELECT student_id,DATE(logouttime) AS logoutdate,SEC_TO_TIME((HOUR(SUM(TIMEDIFF(a.logouttime,a.logintime)))*60*60 + MINUTE(SUM(TIMEDIFF(a.logouttime,a.logintime)))*60+SECOND(SUM(TIMEDIFF(a.logouttime,a.logintime))))) AS total_duration FROM(SELECT i.id,i.student_id,i.activity_timestamp AS logintime,(SELECT o.activity_timestamp FROM student_audit_details o WHERE i.student_id = o.student_id AND CONVERT(i.activity_timestamp,DATE) = CONVERT(o.activity_timestamp,DATE)AND o.activity_timestamp> i.activity_timestamp AND o.login_activity_id = 2 AND o.activity_timestamp = (SELECT MIN(o2.activity_timestamp)FROM student_audit_details  o2 WHERE o2.activity_timestamp > i.activity_timestamp)) AS logouttime FROM student_audit_details i WHERE i.login_activity_id = 1) a GROUP BY DATE(logintime),DATE(logouttime), student_id)b WHERE (logoutdate)BETWEEN DATE_SUB(NOW(),INTERVAL DAYOFWEEK(NOW())-1 DAY) AND NOW() AND b.student_id="+ studentId);
 			studentLoginHoursDetails = dataRetriver.retrieveBySQLWithResultTransformer(sb.toString(),
 					StudentLoginHoursDTO.class);
 			logger.info("Student Projects Activity Points data retrieval success..");

@@ -6,6 +6,14 @@ public class StudentAccountDTO {
 	private Integer studentId;
 	private String name;
 	private String username;
+	private String password;
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	private String department;
 	private String collegeName;
 	private Integer skillPoints;

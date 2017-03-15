@@ -19,4 +19,8 @@ public interface StudentProjectDAO {
 		public List<StudentProjectSkillPointsDTO> getStudentProjectSkillPoints(Integer studentId) throws DataServiceException;
 
 	public List<StudentProjectPercentageDTO> getStudentProjectPercentageCompleted(Integer studentId) throws DataServiceException;
+
+	public List<StudentProject> getStudentProjectDetails(String projectName) throws DataServiceException;
+
+	public List<StudentProject> getStudentProjectActivityDetails(String projectName) throws DataServiceException;
 }

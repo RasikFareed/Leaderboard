@@ -21,4 +21,8 @@ public interface StudentProjectService {
 
 	List<StudentProjectPercentageDTO> getStudentProjectPercentageCompleted(Integer studentId) throws BusinessServiceException;
 
+	List<StudentProject> getStudentProjectDetails(String projectName) throws BusinessServiceException;
+
+	List<StudentProject> getStudentProjectActivityDetails(String projectName) throws BusinessServiceException;
+
 }

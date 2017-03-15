@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.revature.data.access.DataModifier;
 import com.revature.data.access.DataRetriver;
 import com.revature.data.access.exception.DataAccessException;
 import com.revature.data.exception.DataServiceException;
@@ -26,6 +27,16 @@ public class StudentAccountDAOImpl implements com.revature.data.StudentAccountDA
 	public void setDataRetriver(DataRetriver dataRetriver) {
 		this.dataRetriver = dataRetriver;
 	}
+	@Autowired
+	private DataModifier dataModifier;
+
+	public DataModifier getDataModifier() {
+		return dataModifier;
+	}
+
+	public void setDataModifier(DataModifier dataModifier) {
+		this.dataModifier = dataModifier;
+	}
 
 	@Override
 	public StudentAccountDTO getId(String emailId, String password) throws DataServiceException {
@@ -44,6 +55,61 @@ public class StudentAccountDAOImpl implements com.revature.data.StudentAccountDA
 		return studentAccount;
 
 	}
+	@Override
+	public StudentAccountDTO getUserByLogin(String emailId, String password) throws DataServiceException {
+		StudentAccountDTO studentAccountDTOObj = null;
+
+		try {
+			StringBuilder sb = new StringBuilder(
+					"SELECT PASSWORD password FROM student_account WHERE USERNAME='" + emailId + "'");
+			studentAccountDTOObj = (StudentAccountDTO) dataRetriver.retrieveBySQLAsObject(sb.toString(),
+					StudentAccountDTO.class);
+			System.out.println(studentAccountDTOObj);
+			if (studentAccountDTOObj == null)
+				logger.info("User not exists");
+			else {
+				String dbPassword = studentAccountDTOObj.getPassword();
+				logger.info("Pass-db     " + dbPassword);
+				if (DataUtils.checkPassword(password, dbPassword)) {
+					logger.info("User login success...");
+					StringBuilder sb1 = new StringBuilder(
+							"SELECT student_Id  stuId,NAME  name,`USERNAME` username ,`PASSWORD` password,`DEPARTMENT` department,COLLEGE_NAME collegeName,Skill_Points skillPts,Activity_Points actPts FROM `vw_student_details` WHERE USERNAME='"
+									+ emailId + "'" + " and PASSWORD='" + dbPassword + "'");
+					studentAccountDTOObj = (StudentAccountDTO) dataRetriver.retrieveBySQLAsObject(sb1.toString(),
+							StudentAccountDTO.class);
+				} else
+					logger.info("User login failure..." + studentAccountDTOObj);
+				logger.info("Users data retrieval success..");
+			}
+		} catch (DataAccessException e) {
+			logger.error(e.getMessage(), e);
+			throw new DataServiceException(DataUtils.getPropertyMessage("data_retrieval_fail"), e);
+		}
+		return studentAccountDTOObj;
+	}
+
+	@Override
+	public String insertUserPassword(String password, String emailId) throws DataServiceException {
+		String hashedPassword = null;
+		int rows = 0;
+		String msg = null;
+		try {
+			hashedPassword = DataUtils.encryptPassword(password);
+			System.out.println(hashedPassword);
+			StringBuilder sb = new StringBuilder("UPDATE student_account SET PASSWORD='" + hashedPassword + "'"
+					+ " WHERE USERNAME='" + emailId + "'");
+			rows = dataModifier.modifyBySQL(sb.toString());
+			if (rows == 0)
+				msg = "Password not inserted...";
+			else
+				msg = "Password inserted...";
+		} catch (DataAccessException e) {
+			logger.error(e.getMessage(), e);
+			throw new DataServiceException(DataUtils.getPropertyMessage("data_modifier_fail"), e);
+		}
+		logger.info(msg);
+		return msg;
+	}
 
 	@Override
 	public List<StudentAccount> getActivityPointsByStudentId(Integer studentId) throws DataServiceException {
@@ -61,4 +127,6 @@ public class StudentAccountDAOImpl implements com.revature.data.StudentAccountDA
 		return studentAccount;
 	}
 
-}
+	
+	}
+

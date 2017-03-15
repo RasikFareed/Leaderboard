@@ -59,6 +59,40 @@ public class StudentProjectController {
 		return studentProjectPercentage;
 	}
 
+	@RequestMapping("project/{projectName}/details")
+	public List<StudentProject> getStudenProjectDetails(@PathVariable("projectName") String projectName) {
+		List<StudentProject> studentProjectDetails = null;
+		try {
+			logger.info("Getting the student projects data...");
+			studentProjectDetails = studentProjectService.getStudentProjectDetails(projectName);
+			logger.info("student projects data retrieval success.");
+		} catch (BusinessServiceException e) {
+			logger.error(e.getMessage(), e);
+			throw new InvalidInputException(e.getMessage(), e);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new InternalException("System has some issue...", e);
+		}
+		return studentProjectDetails;
+	}
+
+	@RequestMapping("project/{projectName}/activitydetails")
+	public List<StudentProject> getStudenProjectActivityDetails(@PathVariable("projectName") String projectName) {
+		List<StudentProject> studentProjectActivityDetails = null;
+		try {
+			logger.info("Getting the student projects data...");
+			studentProjectActivityDetails = studentProjectService.getStudentProjectDetails(projectName);
+			logger.info("student projects data retrieval success.");
+		} catch (BusinessServiceException e) {
+			logger.error(e.getMessage(), e);
+			throw new InvalidInputException(e.getMessage(), e);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new InternalException("System has some issue...", e);
+		}
+		return studentProjectActivityDetails;
+	}
+
 	
 
 	

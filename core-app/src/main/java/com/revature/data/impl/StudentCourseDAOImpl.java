@@ -12,6 +12,8 @@ import com.revature.data.access.exception.DataAccessException;
 import com.revature.data.exception.DataServiceException;
 import com.revature.data.utils.DataUtils;
 import com.revature.model.StudentCourse;
+import com.revature.model.StudentProject;
+import com.revature.model.DTO.StudentCourseDetailsDTO;
 import com.revature.model.DTO.StudentCourseHoursSpentDTO;
 import com.revature.model.DTO.StudentCoursePercentageDTO;
 import com.revature.model.DTO.StudentCourseSkillPointsDTO;
@@ -39,7 +41,7 @@ public class StudentCourseDAOImpl implements StudentCourseDAO {
 		List<StudentCourseSkillPointsDTO> studentCourseSkillPoints = null;
 		try {
 			StringBuilder sb = new StringBuilder(
-					"SELECT NAME courseName,SKILL_POINTS skillPts FROM vw_student_course_skill_points WHERE STUDENT_ID="
+					"SELECT`courses`.`NAME` courseName,SUM(`course_contents`.`SKILL_POINTS`) skillPts FROM ((`student_courses` LEFT JOIN (`student_course_contents`JOIN `course_contents`ON ((`course_contents`.`ID` = `student_course_contents`.`COURSE_CONTENT_ID`)))ON ((`student_courses`.`ID` = `student_course_contents`.`STUDENT_COURSE_ID`)))JOIN `courses` ON ((`courses`.`ID` = `course_contents`.`COURSE_ID`))) WHERE `student_course_contents`.`STATUS_ID` = 2 GROUP BY `student_courses`.`STUDENT_ID`,`courses`.`NAME` having student_id="
 							+ studentId);
 			studentCourseSkillPoints = dataRetriver.retrieveBySQLWithResultTransformer(sb.toString(),
 					StudentCourseSkillPointsDTO.class);
@@ -56,7 +58,7 @@ public class StudentCourseDAOImpl implements StudentCourseDAO {
 		List<StudentCourseHoursSpentDTO> studentCoursesHoursSpent = null;
 		try {
 			StringBuilder sb = new StringBuilder(
-					"SELECT NAME courseName,STUDENT_ID stuId,HOURS_SPENT hrSpnt FROM vw_student_course_hours_spent WHERE STUDENT_ID="
+					"SELECT`courses`.`NAME`courseName,`student_courses`.`STUDENT_ID` stuId,SUM(`course_contents`.`DURATION_IN_MINUTES`) hrSpnt FROM ((`student_courses`LEFT JOIN (`student_course_contents`JOIN `course_contents`ON ((`course_contents`.`ID` = `student_course_contents`.`COURSE_CONTENT_ID`)))ON ((`student_courses`.`ID` = `student_course_contents`.`STUDENT_COURSE_ID`)))JOIN `courses`ON ((`courses`.`ID` = `course_contents`.`COURSE_ID`)))WHERE (`student_course_contents`.`STATUS_ID` = 2)GROUP BY `student_courses`.`STUDENT_ID`,`courses`.`NAME` having student_id="
 							+ studentId);
 			studentCoursesHoursSpent = dataRetriver.retrieveBySQLWithResultTransformer(sb.toString(),
 					StudentCourseHoursSpentDTO.class);
@@ -73,8 +75,7 @@ public class StudentCourseDAOImpl implements StudentCourseDAO {
 		List<StudentCoursePercentageDTO> studentCoursesPercentage = null;
 		try {
 			StringBuilder sb = new StringBuilder(
-					"SELECT STUDENT_ID stuId,NAME courseName,PERCENTAGE perComp FROM vw_student_course_percentage_calculation WHERE STUDENT_ID="
-							+ studentId);
+					"SELECT students.`ID` stuId,courses.`NAME` courseName,ROUND((COUNT(DISTINCT COURSE_CONTENT_ID) / COUNT(DISTINCT VIDEO_ID))*100) perComp FROM students JOIN student_courses ON students.`ID`=student_courses.`STUDENT_ID` JOIN courses ON student_courses.`COURSE_ID`=courses.`ID` JOIN  student_course_contents ON student_course_contents.`STUDENT_COURSE_ID`=student_courses.`ID` JOIN `course_contents` ON `course_contents`.`COURSE_ID`=courses.`ID`GROUP  BY `student_course_contents`.`STUDENT_COURSE_ID` having students.id="+ studentId);
 			studentCoursesPercentage = dataRetriver.retrieveBySQLWithResultTransformer(sb.toString(),
 					StudentCoursePercentageDTO.class);
 			logger.info("Student courses data retrieval success..");
@@ -86,18 +87,18 @@ public class StudentCourseDAOImpl implements StudentCourseDAO {
 	}
 
 	@Override
-	public List<StudentCourse> getStudentCourseDetails(String courseName) throws DataServiceException {
-		List<StudentCourse> studentCourses = null;
+	public List<StudentCourseDetailsDTO> getStudentCourseDetails(String courseName) throws DataServiceException {
+		List<StudentCourseDetailsDTO> studentCoursesDTO = null;
 		try {
 			StringBuilder sb = new StringBuilder(
-					"SELECT * FROM VW_STUDENT_COURSE_DETAILS WHERE COURSE_NAME = '" + courseName + "'");
-			studentCourses = dataRetriver.retrieveBySQLJSON(sb.toString());
+					"SELECT  DISTINCT courses.`NAME` AS COURSE_NAME,COUNT(DISTINCT VIDEO_ID) AS NO_OF_VIDEOS,courses.`DESCRIPTION` ,courses.`ENROLLMENT_POINTS`,courses.`COMPLETION_POINTS`FROM students JOIN student_courses ON students.`ID`=student_courses.`STUDENT_ID`JOIN courses ON student_courses.`COURSE_ID`=courses.`ID` JOIN  student_course_contents ON student_course_contents.`STUDENT_COURSE_ID`=student_courses.`ID`JOIN `course_contents` ON `course_contents`.`COURSE_ID`=courses.`ID`GROUP  BY `student_course_contents`.`STUDENT_COURSE_ID` having courses.NAME='" + courseName + "'");
+			studentCoursesDTO = dataRetriver.retrieveBySQLWithResultTransformer(sb.toString(), StudentCourseDetailsDTO.class);;
 			logger.info("Student courses data retrieval success..");
 		} catch (DataAccessException e) {
 			logger.error(e.getMessage(), e);
 			throw new DataServiceException(DataUtils.getPropertyMessage("data_retrieval_fail"), e);
 		}
-		return studentCourses;
+		return studentCoursesDTO;
 	}
 
 	@Override
@@ -105,8 +106,7 @@ public class StudentCourseDAOImpl implements StudentCourseDAO {
 		List<StudentCourse> studentCourses = null;
 		try {
 			StringBuilder sb = new StringBuilder(
-					"SELECT ACTIVITY_NAME FROM VW_STUDENT_COURSE_ACTIVITY_DETAILS WHERE COURSE_NAME = '" + courseName
-							+ "'");
+					"SELECT`courses`.`ID` AS `COURSE_ID`,`courses`.`NAME`AS `COURSE_NAME`,`course_contents`.`NAME` AS `ACTIVITY_NAME`FROM (`courses` JOIN `course_contents`ON ((`course_contents`.`COURSE_ID` = `courses`.`ID`))) WHERE courses.NAME='" + courseName+ "'");
 			studentCourses = dataRetriver.retrieveBySQLJSON(sb.toString());
 			logger.info("Student courses data retrieval success..");
 		} catch (DataAccessException e) {

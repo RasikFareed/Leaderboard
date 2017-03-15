@@ -33,7 +33,7 @@ public class CategoryDAOImpl implements CategoryDAO {
   public List<Category> getAllCategories() throws DataServiceException {
     List<Category> categories = null;
     try {
-      StringBuilder sb = new StringBuilder("select * from categories");
+      StringBuilder sb = new StringBuilder("select * from categories where ID=:id");
       categories = dataRetriver.retrieveBySQL(sb.toString());
       logger.info("Categories data retrieval success..");
     } catch (DataAccessException e) {
