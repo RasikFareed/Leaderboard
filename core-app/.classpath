@@ -63,6 +63,5 @@
 	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="C:/Users/Welcome/Downloads/jackson-databind-2.8.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/Welcome/Downloads/jackson-core-2.8.7.jar"/>
-	<classpathentry kind="lib" path="E:/eclipse/spring-security-core-4.2.1.RELEASE.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

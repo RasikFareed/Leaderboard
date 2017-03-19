@@ -1,16 +1,16 @@
 package com.revature.model.DTO;
 
-public class StudentCourseDetailsDTO {
-	private String courseName;
+public class StudentprojectDetailsDTO {
+	private String projectName;
 	private String description;
-	private Integer videoCount;
+	private Integer activityCount;
 	private Integer enrollmentPoints;
 	private Integer completionPoints;
-	public String getcourseName() {
-		return courseName;
+	public String getProjectName() {
+		return projectName;
 	}
-	public void setcourseName(String projectName) {
-		this.courseName = projectName;
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 	public String getDescription() {
 		return description;
@@ -18,17 +18,17 @@ public class StudentCourseDetailsDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Integer getVideoCount() {
-		return videoCount;
+	public Integer getActivityCount() {
+		return activityCount;
 	}
-	public void setVideoCount(Integer videoCount) {
-		this.videoCount = videoCount;
+	public void setActivityCount(Integer activityCount) {
+		this.activityCount = activityCount;
 	}
 	public Integer getEnrollmentPoints() {
 		return enrollmentPoints;
 	}
-	public void setEnrollmentPoints(Integer enrollmentpoints) {
-		this.enrollmentPoints = enrollmentpoints;
+	public void setEnrollmentPoints(Integer enrollmentPoints) {
+		this.enrollmentPoints = enrollmentPoints;
 	}
 	public Integer getCompletionPoints() {
 		return completionPoints;
@@ -36,14 +36,14 @@ public class StudentCourseDetailsDTO {
 	public void setCompletionPoints(Integer completionPoints) {
 		this.completionPoints = completionPoints;
 	}
-	public void setVideoCnt(Object o) {
+	public void setActivityCnt(Object o) {
 		if (o != null) {
-			this.videoCount= Integer.parseInt(o.toString());
+			this.activityCount= Integer.parseInt(o.toString());
 
 		}
 	}
 
-	public Object getVideoCnt() {
+	public Object getActivityCnt() {
 		return 0;
 	}
 

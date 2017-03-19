@@ -11,8 +11,10 @@ import com.revature.biz.exception.BusinessServiceException;
 import com.revature.data.StudentProjectDAO;
 import com.revature.data.exception.DataServiceException;
 import com.revature.model.StudentProject;
+import com.revature.model.DTO.StudentProjectActivityDetailsDTO;
 import com.revature.model.DTO.StudentProjectPercentageDTO;
 import com.revature.model.DTO.StudentProjectSkillPointsDTO;
+import com.revature.model.DTO.StudentprojectDetailsDTO;
 
 @Service
 public class StudentProjectServiceImpl implements StudentProjectService {
@@ -53,9 +55,9 @@ public class StudentProjectServiceImpl implements StudentProjectService {
 	}
 	
 	@Override
-	public List<StudentProject> getStudentProjectDetails(String projectName)
+	public List<StudentprojectDetailsDTO> getStudentProjectDetails(String projectName)
 			throws BusinessServiceException {
-		List<StudentProject> studentProjectDetails = null;
+		List<StudentprojectDetailsDTO> studentProjectDetails = null;
 		try {
 			studentProjectDetails = studentProjectDAO.getStudentProjectDetails(projectName);
 			logger.info("Student Project Activity Points retrieved successfully");
@@ -66,11 +68,11 @@ public class StudentProjectServiceImpl implements StudentProjectService {
 		return studentProjectDetails;
 	}
 	@Override
-	public List<StudentProject> getStudentProjectActivityDetails(String projectName)
+	public List<StudentProjectActivityDetailsDTO> getStudentProjectActivityDetails(String projectName)
 			throws BusinessServiceException {
-		List<StudentProject> studentProjectActivityDetails = null;
+		List<StudentProjectActivityDetailsDTO> studentProjectActivityDetails = null;
 		try {
-			studentProjectActivityDetails = studentProjectDAO.getStudentProjectDetails(projectName);
+			studentProjectActivityDetails = studentProjectDAO.getStudentProjectActivityDetails(projectName);
 			logger.info("Student Project Activity Points retrieved successfully");
 		} catch (DataServiceException e) {
 			logger.error(e.getMessage(), e);

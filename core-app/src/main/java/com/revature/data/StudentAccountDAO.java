@@ -16,7 +16,7 @@ public interface StudentAccountDAO {
 	 *             if any exception happens while executing the query
 	 */
 
-//	public StudentAccountDTO getId(String emailId, String password) throws DataServiceException;
+public StudentAccountDTO getId(String emailId, String password) throws DataServiceException;
 	/**
 	 * Used to get the student activity data from db.
 	 * 
@@ -27,8 +27,8 @@ public interface StudentAccountDAO {
 	
 
 	public List<StudentAccount> getActivityPointsByStudentId(Integer studentId) throws DataServiceException;
-	public StudentAccountDTO getUserByLogin(String emailId, String password) throws DataServiceException;
-	public String insertUserPassword(String password, String emailId) throws DataServiceException;
-	public StudentAccountDTO getId(String emailId, String password) throws DataServiceException;
+//	public StudentAccountDTO getUserByLogin(String emailId, String password) throws DataServiceException;
+//	public String insertUserPassword(String password, String emailId) throws DataServiceException;
+
 
 }

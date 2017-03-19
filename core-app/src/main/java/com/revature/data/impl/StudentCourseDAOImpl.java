@@ -13,6 +13,7 @@ import com.revature.data.exception.DataServiceException;
 import com.revature.data.utils.DataUtils;
 import com.revature.model.StudentCourse;
 import com.revature.model.StudentProject;
+import com.revature.model.DTO.StudentCourseActivityDetailsDTO;
 import com.revature.model.DTO.StudentCourseDetailsDTO;
 import com.revature.model.DTO.StudentCourseHoursSpentDTO;
 import com.revature.model.DTO.StudentCoursePercentageDTO;
@@ -91,7 +92,7 @@ public class StudentCourseDAOImpl implements StudentCourseDAO {
 		List<StudentCourseDetailsDTO> studentCoursesDTO = null;
 		try {
 			StringBuilder sb = new StringBuilder(
-					"SELECT  DISTINCT courses.`NAME` AS COURSE_NAME,COUNT(DISTINCT VIDEO_ID) AS NO_OF_VIDEOS,courses.`DESCRIPTION` ,courses.`ENROLLMENT_POINTS`,courses.`COMPLETION_POINTS`FROM students JOIN student_courses ON students.`ID`=student_courses.`STUDENT_ID`JOIN courses ON student_courses.`COURSE_ID`=courses.`ID` JOIN  student_course_contents ON student_course_contents.`STUDENT_COURSE_ID`=student_courses.`ID`JOIN `course_contents` ON `course_contents`.`COURSE_ID`=courses.`ID`GROUP  BY `student_course_contents`.`STUDENT_COURSE_ID` having courses.NAME='" + courseName + "'");
+					"SELECT  DISTINCT courses.`NAME` courseName,COUNT(DISTINCT VIDEO_ID) AS videoCnt,courses.`DESCRIPTION` description ,courses.`ENROLLMENT_POINTS` enrPts,courses.`COMPLETION_POINTS` compPts FROM students JOIN student_courses ON students.`ID`=student_courses.`STUDENT_ID`JOIN courses ON student_courses.`COURSE_ID`=courses.`ID` JOIN  student_course_contents ON student_course_contents.`STUDENT_COURSE_ID`=student_courses.`ID`JOIN `course_contents` ON `course_contents`.`COURSE_ID`=courses.`ID`GROUP  BY `student_course_contents`.`STUDENT_COURSE_ID` having courses.NAME='" + courseName + "'");
 			studentCoursesDTO = dataRetriver.retrieveBySQLWithResultTransformer(sb.toString(), StudentCourseDetailsDTO.class);;
 			logger.info("Student courses data retrieval success..");
 		} catch (DataAccessException e) {
@@ -102,12 +103,12 @@ public class StudentCourseDAOImpl implements StudentCourseDAO {
 	}
 
 	@Override
-	public List<StudentCourse> getStudentCourseActivityDetails(String courseName) throws DataServiceException {
-		List<StudentCourse> studentCourses = null;
+	public List<StudentCourseActivityDetailsDTO> getStudentCourseActivityDetails(String courseName) throws DataServiceException {
+		List<StudentCourseActivityDetailsDTO> studentCourses = null;
 		try {
 			StringBuilder sb = new StringBuilder(
-					"SELECT`courses`.`ID` AS `COURSE_ID`,`courses`.`NAME`AS `COURSE_NAME`,`course_contents`.`NAME` AS `ACTIVITY_NAME`FROM (`courses` JOIN `course_contents`ON ((`course_contents`.`COURSE_ID` = `courses`.`ID`))) WHERE courses.NAME='" + courseName+ "'");
-			studentCourses = dataRetriver.retrieveBySQLJSON(sb.toString());
+					"SELECT `courses`.`NAME` courseName,`course_contents`.`NAME` activityName FROM (`courses` JOIN `course_contents`ON ((`course_contents`.`COURSE_ID` = `courses`.`ID`))) WHERE courses.NAME='" + courseName+ "'");
+			studentCourses = dataRetriver.retrieveBySQLWithResultTransformer(sb.toString(),StudentCourseActivityDetailsDTO.class);
 			logger.info("Student courses data retrieval success..");
 		} catch (DataAccessException e) {
 			logger.error(e.getMessage(), e);

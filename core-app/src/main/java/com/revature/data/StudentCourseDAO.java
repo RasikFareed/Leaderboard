@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.revature.data.exception.DataServiceException;
 import com.revature.model.StudentCourse;
+import com.revature.model.DTO.StudentCourseActivityDetailsDTO;
 import com.revature.model.DTO.StudentCourseDetailsDTO;
 import com.revature.model.DTO.StudentCourseHoursSpentDTO;
 import com.revature.model.DTO.StudentCoursePercentageDTO;
@@ -54,6 +55,6 @@ public interface StudentCourseDAO {
 	 * @throws DataServiceException
 	 *             if any exception happens while executing the query
 	 */
-	public List<StudentCourse> getStudentCourseActivityDetails(String courseName) throws DataServiceException;
+	public List<StudentCourseActivityDetailsDTO> getStudentCourseActivityDetails(String courseName) throws DataServiceException;
 
 }

@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.revature.biz.exception.BusinessServiceException;
 import com.revature.model.StudentProject;
+import com.revature.model.DTO.StudentProjectActivityDetailsDTO;
 import com.revature.model.DTO.StudentProjectPercentageDTO;
 import com.revature.model.DTO.StudentProjectSkillPointsDTO;
+import com.revature.model.DTO.StudentprojectDetailsDTO;
 
 public interface StudentProjectService {
 	/**
@@ -21,8 +23,8 @@ public interface StudentProjectService {
 
 	List<StudentProjectPercentageDTO> getStudentProjectPercentageCompleted(Integer studentId) throws BusinessServiceException;
 
-	List<StudentProject> getStudentProjectDetails(String projectName) throws BusinessServiceException;
+	List<StudentprojectDetailsDTO> getStudentProjectDetails(String projectName) throws BusinessServiceException;
 
-	List<StudentProject> getStudentProjectActivityDetails(String projectName) throws BusinessServiceException;
+	List<StudentProjectActivityDetailsDTO> getStudentProjectActivityDetails(String projectName) throws BusinessServiceException;
 
 }

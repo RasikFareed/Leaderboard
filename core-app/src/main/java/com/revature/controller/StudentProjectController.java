@@ -13,8 +13,10 @@ import com.revature.biz.exception.BusinessServiceException;
 import com.revature.controller.exception.InternalException;
 import com.revature.controller.exception.InvalidInputException;
 import com.revature.model.StudentProject;
+import com.revature.model.DTO.StudentProjectActivityDetailsDTO;
 import com.revature.model.DTO.StudentProjectPercentageDTO;
 import com.revature.model.DTO.StudentProjectSkillPointsDTO;
+import com.revature.model.DTO.StudentprojectDetailsDTO;
 
 @RestController
 @RequestMapping("/student")
@@ -60,8 +62,8 @@ public class StudentProjectController {
 	}
 
 	@RequestMapping("project/{projectName}/details")
-	public List<StudentProject> getStudenProjectDetails(@PathVariable("projectName") String projectName) {
-		List<StudentProject> studentProjectDetails = null;
+	public List<StudentprojectDetailsDTO> getStudenProjectDetails(@PathVariable("projectName") String projectName) {
+		List<StudentprojectDetailsDTO> studentProjectDetails = null;
 		try {
 			logger.info("Getting the student projects data...");
 			studentProjectDetails = studentProjectService.getStudentProjectDetails(projectName);
@@ -77,11 +79,11 @@ public class StudentProjectController {
 	}
 
 	@RequestMapping("project/{projectName}/activitydetails")
-	public List<StudentProject> getStudenProjectActivityDetails(@PathVariable("projectName") String projectName) {
-		List<StudentProject> studentProjectActivityDetails = null;
+	public List<StudentProjectActivityDetailsDTO> getStudenProjectActivityDetails(@PathVariable("projectName") String projectName) {
+		List<StudentProjectActivityDetailsDTO> studentProjectActivityDetails = null;
 		try {
 			logger.info("Getting the student projects data...");
-			studentProjectActivityDetails = studentProjectService.getStudentProjectDetails(projectName);
+			studentProjectActivityDetails = studentProjectService.getStudentProjectActivityDetails(projectName);
 			logger.info("student projects data retrieval success.");
 		} catch (BusinessServiceException e) {
 			logger.error(e.getMessage(), e);

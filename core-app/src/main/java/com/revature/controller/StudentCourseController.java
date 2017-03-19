@@ -13,6 +13,7 @@ import com.revature.biz.exception.BusinessServiceException;
 import com.revature.controller.exception.InternalException;
 import com.revature.controller.exception.InvalidInputException;
 import com.revature.model.StudentCourse;
+import com.revature.model.DTO.StudentCourseActivityDetailsDTO;
 import com.revature.model.DTO.StudentCourseDetailsDTO;
 import com.revature.model.DTO.StudentCourseHoursSpentDTO;
 import com.revature.model.DTO.StudentCoursePercentageDTO;
@@ -82,7 +83,7 @@ public class StudentCourseController {
 		return studentcourses;
 	}
 
-	@RequestMapping("course/{courseName}/coursedetails")
+	@RequestMapping("course/{courseName}/details")
 	public List<StudentCourseDetailsDTO> getStudentCourseDetailsByCourseName(@PathVariable("courseName") String courseName) {
 		List<StudentCourseDetailsDTO> studentCourseDetailsDTO = null;
 		try {
@@ -100,9 +101,9 @@ public class StudentCourseController {
 	}
 
 	@RequestMapping("course/{courseName}/activitydetails")
-	public List<StudentCourse> getStudentCourseActivityDetailsByCourseName(
+	public List<StudentCourseActivityDetailsDTO> getStudentCourseActivityDetailsByCourseName(
 			@PathVariable("courseName") String courseName) {
-		List<StudentCourse> studentcourses = null;
+		List<StudentCourseActivityDetailsDTO> studentcourses = null;
 		try {
 			logger.info("Getting the student courses data...");
 			studentcourses = studentCourseService.getStudentCourseActivityDetails(courseName);

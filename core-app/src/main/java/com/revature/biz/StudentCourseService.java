@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.revature.biz.exception.BusinessServiceException;
 import com.revature.model.StudentCourse;
+import com.revature.model.DTO.StudentCourseActivityDetailsDTO;
 import com.revature.model.DTO.StudentCourseDetailsDTO;
 import com.revature.model.DTO.StudentCourseHoursSpentDTO;
 import com.revature.model.DTO.StudentCoursePercentageDTO;
@@ -28,6 +29,6 @@ public interface StudentCourseService {
 
 	List<StudentCourseDetailsDTO> getStudentCourseDetails(String courseName) throws BusinessServiceException;
 
-	List<StudentCourse> getStudentCourseActivityDetails(String courseName) throws BusinessServiceException;
+	List<StudentCourseActivityDetailsDTO> getStudentCourseActivityDetails(String courseName) throws BusinessServiceException;
 
 }

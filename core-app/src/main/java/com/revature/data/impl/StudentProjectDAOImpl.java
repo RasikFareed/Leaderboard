@@ -11,9 +11,10 @@ import com.revature.data.access.DataRetriver;
 import com.revature.data.access.exception.DataAccessException;
 import com.revature.data.exception.DataServiceException;
 import com.revature.data.utils.DataUtils;
-import com.revature.model.StudentProject;
+import com.revature.model.DTO.StudentProjectActivityDetailsDTO;
 import com.revature.model.DTO.StudentProjectPercentageDTO;
 import com.revature.model.DTO.StudentProjectSkillPointsDTO;
+import com.revature.model.DTO.StudentprojectDetailsDTO;
 
 @Repository
 public class StudentProjectDAOImpl implements StudentProjectDAO {
@@ -57,11 +58,11 @@ public class StudentProjectDAOImpl implements StudentProjectDAO {
 		return studentProjectPercentage;
 	}
 	@Override
-	public List<StudentProject> getStudentProjectDetails(String projectName) throws DataServiceException {
-		List<StudentProject> studentProjectDetails = null;
+	public List<StudentprojectDetailsDTO> getStudentProjectDetails(String projectName) throws DataServiceException {
+		List<StudentprojectDetailsDTO> studentProjectDetails = null;
 		try {
-			StringBuilder sb = new StringBuilder("SELECT projects.`NAME`,projects.`DESCRIPTION`,projects.`ENROLLMENT_POINTS`,projects.`COMPLETION_POINTS`,COUNT(project_sprint_activities.`NAME`) FROM projects JOIN project_sprints  ON project_sprints.`PROJECT_ID`=projects.`ID` JOIN project_sprint_activities  ON project_sprint_activities.`PROJECT_SPRINT_ID`=project_sprints.`ID` GROUP BY projects.`NAME` having projects.name='" + projectName+"'");
-			studentProjectDetails = dataRetriver.retrieveBySQLWithResultTransformer(sb.toString(), StudentProject.class);
+			StringBuilder sb = new StringBuilder("SELECT projects.`NAME` projectName,projects.`DESCRIPTION` description,projects.`ENROLLMENT_POINTS` enrPts,projects.`COMPLETION_POINTS`compPts,COUNT(project_sprint_activities.`NAME`) activityCnt FROM projects JOIN project_sprints  ON project_sprints.`PROJECT_ID`=projects.`ID` JOIN project_sprint_activities  ON project_sprint_activities.`PROJECT_SPRINT_ID`=project_sprints.`ID` GROUP BY projects.`NAME` having projects.name='" + projectName+"'");
+			studentProjectDetails = dataRetriver.retrieveBySQLWithResultTransformer(sb.toString(), StudentprojectDetailsDTO.class);
 			logger.info("Student Projects percentage data retrieval success..");
 		} catch (DataAccessException e) {
 			logger.error(e.getMessage(), e);
@@ -70,11 +71,11 @@ public class StudentProjectDAOImpl implements StudentProjectDAO {
 		return studentProjectDetails;
 	}
 	@Override
-	public List<StudentProject> getStudentProjectActivityDetails(String projectName) throws DataServiceException {
-		List<StudentProject> studentProjectActivityDetails = null;
+	public List<StudentProjectActivityDetailsDTO> getStudentProjectActivityDetails(String projectName) throws DataServiceException {
+		List<StudentProjectActivityDetailsDTO> studentProjectActivityDetails = null;
 		try {
-			StringBuilder sb = new StringBuilder("SELECT projects.`NAME`,project_sprint_activities.`NAME` FROM projects JOIN project_sprints ON project_sprints.`PROJECT_ID`=projects.`ID` JOIN project_sprint_activities ON project_sprint_activities.`PROJECT_SPRINT_ID`=project_sprints.`ID having projects.name='" + projectName+"'");
-			studentProjectActivityDetails = dataRetriver.retrieveBySQLWithResultTransformer(sb.toString(), StudentProject.class);
+			StringBuilder sb = new StringBuilder("SELECT projects.`NAME` projectName,project_sprint_activities.`NAME` activityName FROM projects JOIN project_sprints ON project_sprints.`PROJECT_ID`=projects.`ID` JOIN project_sprint_activities ON project_sprint_activities.`PROJECT_SPRINT_ID`=project_sprints.`ID` where projects.name='" + projectName+"'");
+			studentProjectActivityDetails = dataRetriver.retrieveBySQLWithResultTransformer(sb.toString(), StudentProjectActivityDetailsDTO.class);
 			logger.info("Student Projects percentage data retrieval success..");
 		} catch (DataAccessException e) {
 			logger.error(e.getMessage(), e);
